@@ -1,11 +1,13 @@
 import React from 'react'
-import {Text, View, Image, StyleSheet, Dimensions} from 'react-native'
+import {Text, View, Image, StyleSheet, Dimensions, TouchableOpacity} from 'react-native'
 import Constants from 'expo-constants'
 import {useFonts} from 'expo-font'
 import Svg, { Path } from 'react-native-svg'
+import {NavigationContainer} from '@react-navigation/native';
 
-const Main = () => {
-    
+const Main = ({ navigation, route }) => {
+    const params = route?.params || {}; // Manejo seguro de route y params
+
     const [fontsLoaded] = useFonts({
         Limelight: require('../assets/fonts/Limelight-Regular.ttf'),
         PoppinsRegular: require('../assets/fonts/Poppins-Regular.ttf'),
@@ -18,6 +20,7 @@ const Main = () => {
     const { height } = Dimensions.get('window');
 
     return (
+       
         <View style={[styles.container, { height }]}>
             <Image source={require('../assets/images/LogoBingo.png')} style={styles.logo}/>
             <Text style={styles.logoText}>Del 1 al 90</Text>
@@ -26,6 +29,10 @@ const Main = () => {
                 <Text style={{ color: '#FFFFFE', fontFamily: 'PoppinsRegular', fontSize: 18}}>¡Apretá el botón y sacá números!</Text>
                 {/* Usa Svg y Path para renderizar tu SVG */}
                 <View style={{ marginTop: 30 }}>
+                <TouchableOpacity
+                style={[styles.button]}
+                onPress={() => navigation.navigate("LoadingScreen", params)} 
+                >
                     <Svg
                         width={100}
                         height={100}
@@ -36,6 +43,7 @@ const Main = () => {
                         fill="#FFFFFE"
                         />
                     </Svg>
+                    </TouchableOpacity>
                 </View>
             </View>
 
@@ -117,7 +125,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         position: 'absolute',
-        bottom: 32
+        bottom: 32,
+        
     },
 
     svgSocialMedia:{
